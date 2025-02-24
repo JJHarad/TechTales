@@ -15,19 +15,22 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
-
-// ✅ Dynamic __dirname for ES Modules
-const __dirname = path.resolve();
+// ✅ Connect to MongoDB with Retry Logic
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('✅ MongoDB Connected');
+  } catch (error) {
+    console.error('❌ MongoDB Connection Error:', error);
+    setTimeout(connectDB, 5000);
+  }
+};
+connectDB();
 
 // ✅ CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173', 
-  'https://techtales-0.onrender.com' // ✅ Add your production frontend domain
+  'https://techtales-0.onrender.com' // ✅ Add your deployed frontend URL
 ];
 
 app.use(cors({
@@ -45,7 +48,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS Headers Middleware (extra security)
+// ✅ CORS Headers Middleware
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin);
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -63,6 +66,7 @@ app.use('/api/comment', commentRoutes);
 
 // ✅ Serve Frontend (for production)
 if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
   app.get('*', (req, res) => {
