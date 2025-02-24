@@ -27,7 +27,7 @@ const __dirname = path.resolve();
 // ✅ CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173', 
-  'https://your-deployed-frontend.com' // ✅ Add your production frontend domain
+  'https://techtales-0.onrender.com' // ✅ Add your production frontend domain
 ];
 
 app.use(cors({
