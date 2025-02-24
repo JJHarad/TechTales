@@ -13,22 +13,17 @@ export default defineConfig({
   },
   plugins: [react()],
   build: {
-    outDir: 'dist', 
-    chunkSizeWarningLimit: 1000 // ✅ Ensure this is correct
+    outDir: 'dist' // ✅ Ensure this is correct
   }
 });
 /*import { defineConfig } from 'vite';
-iimport { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'dist', // ✅ Ensure correct output directory
-    chunkSizeWarningLimit: 1000 // ✅ Increase chunk limit if needed
+    outDir: 'dist' // ✅ Ensure this is correct
   }
-});
-
 });
 */
  
