@@ -23,7 +23,6 @@ app.use(cors({ origin: 'http://localhost:5173', credentials: true })); // ✅ En
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Add CORS Headers Middleware (for extra security)
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -40,7 +39,7 @@ app.use('/api/comment', commentRoutes);
 app.use(express.static(path.join(__dirname, '/client/dist')));
 app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html')));
 
-// ✅ Error Handling Middleware
+
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
