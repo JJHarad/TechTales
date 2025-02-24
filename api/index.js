@@ -30,7 +30,7 @@ connectDB();
 // ✅ CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173', 
-  'https://techtales-0.onrender.com' // ✅ Add your deployed frontend URL
+  'https://techtales-11.onrender.com' // ✅ Add your deployed frontend URL
 ];
 
 app.use(cors({
