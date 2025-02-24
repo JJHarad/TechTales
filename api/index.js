@@ -1,53 +1,83 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import cors from 'cors'; // ✅ Import CORS
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import path from 'path';
+
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import postRoutes from './routes/post.route.js';
 import commentRoutes from './routes/comment.route.js';
-import cookieParser from 'cookie-parser';
-import path from 'path';
 
 dotenv.config();
 
-mongoose
-  .connect(process.env.MONGO)
-  .then(() => console.log('MongoDB is connected'))
-  .catch((err) => console.log(err));
-
-const __dirname = path.resolve();
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true })); // ✅ Enable CORS
+// ✅ Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+
+// ✅ Dynamic __dirname for ES Modules
+const __dirname = path.resolve();
+
+// ✅ CORS Configuration
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'https://your-deployed-frontend.com' // ✅ Add your production frontend domain
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('❌ CORS not allowed for this origin'));
+    }
+  },
+  credentials: true
+}));
+
+// ✅ Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ Add CORS Headers Middleware (for extra security)
+// ✅ CORS Headers Middleware (extra security)
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.header('Access-Control-Allow-Credentials', 'true');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
   next();
 });
 
+// ✅ Routes
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
 
-app.use(express.static(path.join(__dirname, '/client/dist')));
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html')));
+// ✅ Serve Frontend (for production)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  });
+}
 
 // ✅ Error Handling Middleware
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({
+  console.error('❌ Error:', err.message);
+  res.status(err.statusCode || 500).json({
     success: false,
-    statusCode,
-    message: err.message || 'Internal Server Error',
+    message: err.message || 'Internal Server Error'
   });
 });
 
-app.listen(3000, () => console.log('Server running on port 3000!'));
+// ✅ Start Server
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}!`));
