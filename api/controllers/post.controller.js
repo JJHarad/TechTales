@@ -5,8 +5,11 @@ import { errorHandler } from "../utils/error.js";
 // ✅ CREATE A POST (Handles Cloudinary Image Upload)
 export const create = async (req, res, next) => {
   try {
-    // ✅ Ensure `userId` is available
-    const userId = req.body.userId || req.user?.id; 
+    if (!req.body.title || !req.body.content) {
+      return res.status(400).json({ success: false, message: "Title and content are required" });
+    }
+
+    const userId = req.body.userId || req.user?.id;
     if (!userId) {
       return res.status(400).json({ success: false, message: "User ID is required" });
     }
@@ -20,16 +23,16 @@ export const create = async (req, res, next) => {
     const newPost = new Post({
       ...req.body,
       slug,
-      userId, // ✅ Assign userId
+      userId,
     });
 
     const savedPost = await newPost.save();
-    res.status(201).json(savedPost);
+    res.status(201).json({ success: true, post: savedPost });
   } catch (error) {
-    next(error);
+    console.error("Error creating post:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
-
 
 
 export const getposts = async (req, res, next) => {
