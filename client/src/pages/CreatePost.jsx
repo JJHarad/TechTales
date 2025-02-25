@@ -4,6 +4,8 @@ import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || "https://techtales-11.onrender.com"; 
+
 export default function CreatePost({ currentUser }) {
   const [formData, setFormData] = useState({ title: "", category: "", content: "" });
   const [error, setError] = useState(null);
@@ -20,16 +22,11 @@ export default function CreatePost({ currentUser }) {
 
       const token = localStorage.getItem("token");
       if (!token) {
+        setLoading(false);
         return setError("User is not authenticated. Please log in.");
       }
 
-      console.log("📢 Request Payload:", {
-        ...formData,
-        userId: currentUser?._id,
-      });
-
-      // ✅ Dynamic API URL for deployment
-      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+      console.log("📢 Request Payload:", { ...formData, userId: currentUser?._id });
 
       const res = await fetch(`${API_URL}/api/post/create`, {
         method: "POST",
@@ -85,13 +82,10 @@ export default function CreatePost({ currentUser }) {
             <option value="">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">React.js</option>
-            <option value="nextjs">Next.js</option>
             <option value="nodejs">Node.js</option>
-            <option value="cloud-computing">Cloud Computing</option>
-            <option value="machine-learning">Machine Learning</option>
-            <option value="data-science">Data Science</option>
-            <option value="ai">Artificial Intelligence (AI)</option>
+            <option value="ai">Artificial Intelligence</option>
             <option value="web-development">Web Development</option>
+            <option value="cloud-computing">Cloud Computing</option>
           </Select>
         </div>
 

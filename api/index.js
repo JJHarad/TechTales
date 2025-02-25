@@ -15,26 +15,23 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Connect to MongoDB with Retry Logic
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('✅ MongoDB Connected');
-  } catch (error) {
-    console.error('❌ MongoDB Connection Error:', error);
-    setTimeout(connectDB, 5000);
-  }
-};
-connectDB();
+// ✅ Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+
+// ✅ Dynamic __dirname for ES Modules
+const __dirname = path.resolve();
 
 // ✅ CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173', 
-  'https://techtales-11.onrender.com' // ✅ Add your deployed frontend URL
+  'https://techtales-11.onrender.com',  // ✅ Add your deployed frontend URL
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -48,9 +45,9 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS Headers Middleware
+// ✅ CORS Headers Middleware (extra security)
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -66,7 +63,6 @@ app.use('/api/comment', commentRoutes);
 
 // ✅ Serve Frontend (for production)
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, 'client', 'dist')));
 
   app.get('*', (req, res) => {
