@@ -79,13 +79,51 @@ export default function CreatePost({ currentUser }) {
               setFormData((prev) => ({ ...prev, category: e.target.value }))
             }
           >
-            <option value="">Select a category</option>
-            <option value="javascript">JavaScript</option>
-            <option value="reactjs">React.js</option>
-            <option value="nodejs">Node.js</option>
-            <option value="ai">Artificial Intelligence</option>
-            <option value="web-development">Web Development</option>
-            <option value="cloud-computing">Cloud Computing</option>
+  <option value="">Select a category</option>
+  <option value="javascript">JavaScript</option>
+  <option value="reactjs">React.js</option>
+  <option value="nextjs">Next.js</option>
+  <option value="angular">Angular</option>
+  <option value="vuejs">Vue.js</option>
+  <option value="nodejs">Node.js</option>
+  <option value="expressjs">Express.js</option>
+  <option value="mongodb">MongoDB</option>
+  <option value="mysql">MySQL</option>
+  <option value="postgresql">PostgreSQL</option>
+  <option value="firebase">Firebase</option>
+  <option value="docker">Docker</option>
+  <option value="kubernetes">Kubernetes</option>
+  <option value="cloud-computing">Cloud Computing</option>
+  <option value="aws">AWS</option>
+  <option value="azure">Azure</option>
+  <option value="gcp">Google Cloud Platform (GCP)</option>
+  <option value="blockchain">Blockchain</option>
+  <option value="cybersecurity">Cybersecurity</option>
+  <option value="devops">DevOps</option>
+  <option value="machine-learning">Machine Learning</option>
+  <option value="deep-learning">Deep Learning</option>
+  <option value="data-science">Data Science</option>
+  <option value="ai">Artificial Intelligence (AI)</option>
+  <option value="web-development">Web Development</option>
+  <option value="mobile-development">Mobile Development</option>
+  <option value="android">Android Development</option>
+  <option value="ios">iOS Development</option>
+  <option value="flutter">Flutter</option>
+  <option value="react-native">React Native</option>
+  <option value="full-stack">Full-Stack Development</option>
+  <option value="frontend">Frontend Development</option>
+  <option value="backend">Backend Development</option>
+  <option value="testing">Software Testing</option>
+  <option value="ci-cd">CI/CD Pipelines</option>
+  <option value="git">Git & GitHub</option>
+  <option value="open-source">Open Source</option>
+  <option value="programming">Programming</option>
+  <option value="competitive-programming">Competitive Programming</option>
+  <option value="algorithms">Algorithms & Data Structures</option>
+  <option value="game-development">Game Development</option>
+  <option value="iot">Internet of Things (IoT)</option>
+  <option value="robotics">Robotics</option>
+  <option value="ar-vr">Augmented Reality (AR) & Virtual Reality (VR)</option>
           </Select>
         </div>
 
