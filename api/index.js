@@ -27,7 +27,7 @@ const __dirname = path.resolve();
 // ✅ CORS Configuration
 const allowedOrigins = [
   'http://localhost:5173', 
-  'https://techverse-11.onrender.com',  // ✅ Add your deployed frontend URL
+  'https://techtales-11.onrender.com',  // ✅ Add your deployed frontend URL
 ];
 
 app.use(cors({
