@@ -4,7 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL = import.meta.env.VITE_API_URL || "https://techtales-11.onrender.com"; 
+const API_URL = import.meta.env.VITE_API_URL || "https://techverse-11.onrender.com"; 
 
 export default function CreatePost({ currentUser }) {
   const [formData, setFormData] = useState({ title: "", category: "", content: "" });

@@ -3,9 +3,9 @@ export default function About() {
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12">
       {/* Header Section */}
       <div className="max-w-3xl text-center">
-        <h1 className="text-4xl font-bold text-white mb-6">About TechTales Blog</h1>
+        <h1 className="text-4xl font-bold text-white mb-6">About TechVerse Blog</h1>
         <p className="text-lg text-gray-400">
-          Welcome to <span className="text-purple-500 font-semibold">TechTales Blog</span>! Your go-to source for insights on artificial intelligence, machine learning, and technology trends.
+          Welcome to <span className="text-purple-500 font-semibold">TechVerse Blog</span>! Your go-to source for insights on artificial intelligence, machine learning, and technology trends.
         </p>
       </div>
 
